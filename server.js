@@ -1,7 +1,10 @@
 // server.js
 const express = require('express');
+const cors = require('cors');
 const https = require('https');
+
 const app = express();
+app.use(cors());  // This must come after app is created
 app.use(express.json());
 
 app.post('/validate-eventor-api-key', (req, res) => {

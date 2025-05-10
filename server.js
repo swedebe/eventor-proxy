@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 const EVENTOR_API_BASE = 'https://eventor.orientering.se/api';
 const EVENTOR_API_KEY = process.env.EVENTOR_API_KEY;
 
-// Validate API key with XML to JSON conversion
+// Validate API key with raw XML logging
 app.post('/validate-eventor-api-key', (req, res) => {
   const apiKey = req.body.apiKey;
   if (!apiKey) {
@@ -39,12 +39,13 @@ app.post('/validate-eventor-api-key', (req, res) => {
     let data = '';
     response.on('data', (chunk) => { data += chunk; });
     response.on('end', async () => {
+      console.log('Raw XML response from Eventor:', data); // Debug log of raw XML or HTML
       try {
         const json = await parseStringPromise(data, { explicitArray: false });
         res.json(json);
       } catch (error) {
         console.error('Error parsing XML to JSON:', error);
-        res.status(500).send({ error: 'Failed to parse Eventor response as JSON' });
+        res.status(500).send({ error: 'Failed to parse Eventor response as JSON', rawResponse: data });
       }
     });
   });

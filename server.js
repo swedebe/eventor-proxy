@@ -4,7 +4,7 @@ const cors = require('cors');
 const https = require('https');
 
 const app = express();
-app.use(cors());  // This must come after app is created
+app.use(cors());
 app.use(express.json());
 
 app.post('/validate-eventor-api-key', (req, res) => {
@@ -28,11 +28,7 @@ app.post('/validate-eventor-api-key', (req, res) => {
     let data = '';
     response.on('data', (chunk) => { data += chunk; });
     response.on('end', () => {
-      res.status(response.statusCode).send({
-        statusCode: response.statusCode,
-        headers: response.headers,
-        body: data
-      });
+      res.status(response.statusCode).send(data);
     });
   });
 

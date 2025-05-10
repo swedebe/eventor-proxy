@@ -9,6 +9,12 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+// Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 
 const EVENTOR_API_BASE = 'https://eventor.orientering.se/api';
 const EVENTOR_API_KEY = process.env.EVENTOR_API_KEY;
